@@ -1,0 +1,17 @@
+[{
+  "type": "sqlite",
+  "database": "./src/database/database.db",
+  "entities": ["./src/entities/sql/*{.ts,.js}"],
+  "migrations": ["./src/database/migrations/*{.ts,.js}"],
+  "cli": {
+    "migrationsDir": "src/database/migrations"
+  }
+},
+{
+  "name": "mongo",
+  "type": "mongodb",
+  "host": "localhost",
+  "port": 27017,
+  "database": "leafchat",
+  "entities": ["./src/entities/mongo/*{.ts,.js}"]
+}]
