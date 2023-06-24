@@ -1,5 +1,4 @@
-module.exports = {
-
+export default {
     access: '',
     admission: '',
     chapa: '',
@@ -7,5 +6,4 @@ module.exports = {
     nome: '',
     email: '',
     senha: ''
-    
 }
