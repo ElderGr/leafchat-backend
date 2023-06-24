@@ -13,7 +13,7 @@ yarn dev
 
 Stop.
 ---------------
-Crlt + Ca
+Crlt + C
 
 Processo Preso.
 -------------------------
