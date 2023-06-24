@@ -1,7 +1,7 @@
 // require('dotenv').config();
 
 import express, { Express } from 'express';
-// import routes from './routes';
+import routes from './routes';
 import cors from 'cors';
 import path from 'path'
 
@@ -17,8 +17,10 @@ const connectedUsers = {};
     
 //     connectedUsers[user] = socket.id;
 // });
-app.use(express.json())
-app.use(cors());
+app
+  .use(cors())
+  .use(express.json())
+  .use(routes)
 
 // app.use((req, res, next)=>{
 //     req.io = io;
