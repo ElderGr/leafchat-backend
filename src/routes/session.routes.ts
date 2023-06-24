@@ -1,9 +1,9 @@
 import express from 'express'
-import SessionController from '@controllers/SessionController'
+import { createSession, getSession } from '@controllers/session.controller'
 
 const routes = express.Router()
 
-routes.get('/sessions', SessionController.index);
-routes.post('/sessions', SessionController.store);
+routes.get('/sessions', getSession);
+routes.post('/sessions', createSession);
 
 export default routes

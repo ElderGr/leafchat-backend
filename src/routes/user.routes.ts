@@ -1,16 +1,19 @@
 import express from 'express'
-import UserController from '@controllers/UserController'
-import uploadConfig from '@config/upload'
-import multer from 'multer'
+import {
+  createUser, 
+  deleteUser, 
+  findUser, 
+  getUsers, 
+  updateUser
+} from '@controllers/user.controller'
 
 const routes = express.Router()
-const upload = multer(uploadConfig);
 
-routes.get('/users', UserController.index);
-routes.post('/users', UserController.store);
-routes.get('/users/:uid', UserController.show);
-routes.put('/users/:uid/', UserController.update);
-routes.delete('/users/:uid', UserController.destroy);
+routes.get('/users', getUsers);
+routes.post('/users', createUser);
+routes.get('/users/:uid', findUser);
+routes.put('/users/:uid/', updateUser);
+routes.delete('/users/:uid', deleteUser);
 
 
 export default routes
