@@ -18,6 +18,19 @@ services:
     networks:
       - leafchat-network
 
+  leafchat-mongodb:
+    container_name: leafchat-mongodb
+    image: mongo
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - /usr/local/leafchat-mongodb/data:/var/lib/mongodb/data
+    networks:
+      - leafchat-network
+
 networks:
   leafchat-network:
     driver: bridge
