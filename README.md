@@ -46,4 +46,5 @@ yarn add multer v1.15.2
 
 [ ] Docker       | include dockerfile for production deploy
 
-[ ] Huscky       | setup
+[ ] Husky       | setup
+- https://duncanlew.medium.com/getting-started-with-husky-and-lint-staged-for-pre-commit-hooks-c2764d8c9ae
