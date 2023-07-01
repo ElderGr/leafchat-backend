@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 
 export async function getChat(req: Request, res: Response){
+  const a: any = 'e'
   // const items = await database.ref('/Chats').once('value');
   // const { user } = req.headers;
 
