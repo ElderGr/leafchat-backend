@@ -25,23 +25,25 @@ Dependencias
 yarn add multer v1.15.2
 
 # Todo
-[] Env          | include load .env setup
+[ ] Env          | include load .env setup
 
-[] Middleware   | include joi middlewares and create schemas
-[] Middleware   | include auth middleware
+[ ] Middleware   | include joi middlewares and create schemas
+[ ] Middleware   | include auth middleware
 
-[] Error        | setup error methods
+[ ] Error        | setup error methods
 
-[] Service      | setup
-[] Service      | implement logic based in each entity
+[ ] Service      | setup
+[ ] Service      | implement logic based in each entity
 
-[] Test         | setup
+[x] Test         | setup
+[ ] Test         | integration
+[ ] Test         | unitary
 
-[] Repository   | create repository
+[ ] Repository   | create repository
 
-[] Socket.io    | setup
-[] Socket.io    | consume in chat endpoint
+[ ] Socket.io    | setup
+[ ] Socket.io    | consume in chat endpoint
 
-[] Docker       | include dockerfile for production deploy
+[ ] Docker       | include dockerfile for production deploy
 
-[] Huscky       | setup
+[ ] Huscky       | setup
