@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Comments {
+  id             String           @id(map: "Comments_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  body           String           @db.VarChar
+  post_id        String           @db.Uuid
+  user_id        String           @db.Uuid
+  likes          Int
+  created_at     DateTime         @db.Date
+  updated_at     DateTime         @db.Date
+  Post           Post             @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_fk0")
+  User           User             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_fk1")
+  Comments_files Comments_files[]
+}
+
+model Comments_files {
+  id         String   @id(map: "Comments_files_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id_comment String   @db.Uuid
+  name       String   @db.VarChar
+  link       String   @db.VarChar
+  created_at DateTime @db.Date
+  updated_at DateTime @db.Date
+  Comments   Comments @relation(fields: [id_comment], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_files_fk0")
+}
+
+model Post {
+  id          String       @id(map: "Post_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id     String       @db.Uuid
+  title       String       @db.VarChar
+  description String       @db.VarChar
+  likes       Int
+  created_at  DateTime     @db.Date
+  updated_at  DateTime     @db.Date
+  Comments    Comments[]
+  User        User         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Post_fk0")
+  Post_files  Post_files[]
+}
+
+model Post_files {
+  id         String   @id(map: "Post_files_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name       String   @db.VarChar
+  link       String   @db.VarChar
+  post_id    String   @db.Uuid
+  created_at DateTime @db.Date
+  updated_at DateTime @db.Date
+  Post       Post     @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Post_files_fk0")
+}
+
+model Session {
+  id         String   @id(map: "Session_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id    String   @db.Uuid
+  email      String   @db.VarChar
+  password   String   @db.VarChar
+  created_at DateTime @db.Date
+  updated_at DateTime @db.Date
+  User       User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Session_fk0")
+}
+
+model User {
+  id         String     @id(map: "User_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name       String     @db.VarChar
+  avatar_url String     @db.VarChar
+  roles      String     @db.VarChar
+  create_at  DateTime   @db.Date
+  updated_at DateTime   @db.Date
+  Comments   Comments[]
+  Post       Post[]
+  Session    Session[]
+}
