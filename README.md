@@ -41,7 +41,7 @@ yarn add multer v1.15.2
 
 [ ] Repository   | create repository
 
-[ ] Socket.io    | setup
+[x] Socket.io    | setup
 [ ] Socket.io    | consume in chat endpoint
 
 [ ] Docker       | include dockerfile for production deploy
