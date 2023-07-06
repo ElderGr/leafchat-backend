@@ -1,11 +1,12 @@
-// require('dotenv').config();
-
-import express, { Express } from 'express';
+import express from 'express';
 import routes from './routes';
 import cors from 'cors';
 import path from 'path';
 import http from 'http';
 import { Server } from 'socket.io';
+import { loadEnv } from './config';
+
+loadEnv();
 
 const app = express();
 const server = http.createServer(app);

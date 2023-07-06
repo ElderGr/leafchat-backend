@@ -25,7 +25,7 @@ Dependencias
 yarn add multer v1.15.2
 
 # Todo
-[ ] Env          | include load .env setup
+[x] Env          | include load .env setup
 
 [ ] Middleware   | include joi middlewares and create schemas
 [ ] Middleware   | include auth middleware
