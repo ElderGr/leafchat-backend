@@ -30,7 +30,7 @@ yarn add multer v1.15.2
 [ ] Middleware   | include joi middlewares and create schemas
 [ ] Middleware   | include auth middleware
 
-[ ] Error        | setup error methods
+[x] Error        | setup error methods
 
 [ ] Service      | setup
 [ ] Service      | implement logic based in each entity

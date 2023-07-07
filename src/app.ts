@@ -7,7 +7,7 @@ import path from 'path';
 import http from 'http';
 import { Server } from 'socket.io';
 import { loadEnv } from './config';
-import { handleApplicationErrors } from '@middleware/error-handling-middleware';
+import { handleApplicationErrors } from 'middlewares/error-handling-middleware';
 
 loadEnv();
 
