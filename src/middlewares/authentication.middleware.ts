@@ -1,10 +1,9 @@
-import { NextFunction, Request, Response } from "express";
-import jwt from 'jsonwebtoken'
-import database from '@services/firebase'
+import { NextFunction, Request, Response } from 'express';
+import jwt from 'jsonwebtoken';
+import database from '@services/firebase';
 
-export default async function authenticateToken(req: Request, res: Response, next: NextFunction){
+export default async function authenticateToken(req: Request, res: Response, next: NextFunction) {
   // const { email, password }  = req.body;
-  
   // database.ref('/User').on('value', function(snapshot) {
   //     try{
   //         var user = '';
@@ -13,7 +12,6 @@ export default async function authenticateToken(req: Request, res: Response, nex
   //                 user = item.val();
   //             }
   //         })
-
   //         if(user !== ''){
   //             var token = jwt.sign(user, 'shhhhhh');
   //             return res.json({token : token})
@@ -21,7 +19,7 @@ export default async function authenticateToken(req: Request, res: Response, nex
   //             return res.status(400).json({error: 'Login not found, check email and password again'})
   //         }
   //     }catch(e){
-  //         return res.status(400).json({error: e}) 
+  //         return res.status(400).json({error: e})
   //     }
-  // }) 
+  // })
 }
