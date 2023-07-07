@@ -17,6 +17,7 @@
       "@routes/*": ["routes/*"],
       "@services/*": ["services/*"],
       "@repository/*": ["repository/*"],
+      "@prisma_config/*": ["../prisma/*"]
     }
   }
 }

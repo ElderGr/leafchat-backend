@@ -1,30 +1,10 @@
 import { Request, Response } from 'express';
-// const database = require('../services/firebase');
-// const jwt = require('jsonwebtoken')
-
-// const userModel = require('../models/User');
-// const { isEmpty } = require('../functions/validate');
+import * as userService from '@services/index';
 
 export async function getUsers(req: Request, res: Response) {
   return res.json({
     mes: 'hello world',
   });
-  //     try{
-  //         const items = await database.ref('User').once('value');
-  //         let users = [];
-
-  //         items.forEach(item =>{
-  //             const {password, ...obj} = item.val()
-
-  //             users.push({
-  //                 ...obj,
-  //                 id: item.ref_.path.pieces_[1]
-  //             });
-  //         })
-  //         return res.json(users);
-  //     }catch(e){
-  //         return res.status(400).json({ error: e });
-  //     }
 }
 
 export async function findUser(req: Request, res: Response) {
@@ -47,29 +27,9 @@ export async function findUser(req: Request, res: Response) {
 }
 
 export async function createUser(req: Request, res: Response) {
-  //     const { email, password }  = req.body;
-  //     database.ref('/User').on('value', function(snapshot) {
-  //         try{
-  //             var user = '';
-  //             snapshot.forEach(item => {
-  //                 if(item.val().email === email && item.val().password === password){
-  //                     const {password, ...values} = item.val();
-  //                     user = {
-  //                         ...values,
-  //                         id: item.ref_.path.pieces_[1]
-  //                     };
-  //                 }
-  //             })
-  //             if(user !== ''){
-  //                 var token = jwt.sign(user, 'shhhhhh');
-  //                 return res.json({token : token})
-  //             }else {
-  //                 return res.status(400).json({error: 'Login not found, check email and password again'})
-  //             }
-  //         }catch(e){
-  //             return res.status(400).json({ error: e })
-  //         }
-  //     })
+  const { email, password } = req.body;
+
+  const user = await userService.createUser();
 }
 
 export async function updateUser(req: Request, res: Response) {
