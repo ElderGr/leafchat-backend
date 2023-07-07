@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+import 'express-async-errors';
 import express from 'express';
 import routes from './routes';
 import cors from 'cors';
@@ -5,6 +7,7 @@ import path from 'path';
 import http from 'http';
 import { Server } from 'socket.io';
 import { loadEnv } from './config';
+import { handleApplicationErrors } from '@middleware/error-handling-middleware';
 
 loadEnv();
 
@@ -22,7 +25,12 @@ io.on('connection', (socket) => {
   });
 });
 
-app.use(cors()).use(express.json()).use(routes);
+app
+  .use(cors())
+  .use(express.json())
+  .get('/health', (_req, res) => res.send('OK!'))
+  .use(routes)
+  .use(handleApplicationErrors);
 
 app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 
