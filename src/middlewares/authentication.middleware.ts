@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import database from '@services/firebase';
 
 export default async function authenticateToken(req: Request, res: Response, next: NextFunction) {
   // const { email, password }  = req.body;

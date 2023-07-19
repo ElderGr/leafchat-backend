@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import * as userService from '@services/index';
+import * as userService from '@/services/user-service/index';
 
 export async function getUsers(req: Request, res: Response) {
   return res.json({
@@ -27,9 +27,17 @@ export async function findUser(req: Request, res: Response) {
 }
 
 export async function createUser(req: Request, res: Response) {
-  const { email, password } = req.body;
+  const { avatar_url, email, name, password, roles } = req.body;
 
-  const user = await userService.createUser();
+  const user = await userService.createUser({
+    avatar_url,
+    email,
+    name,
+    password,
+    roles,
+  });
+
+  return res.send(user);
 }
 
 export async function updateUser(req: Request, res: Response) {
