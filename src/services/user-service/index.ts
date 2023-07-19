@@ -1,6 +1,6 @@
 import userRepository, { ICreateUserParams } from 'repositories/user-repository';
 import bcrypt from 'bcrypt';
-import { duplicatedEmailError } from 'errors/user-errors';
+import { duplicatedEmailError } from '@/services/user-service/errors';
 import { User } from '@prisma_config/generated/postgresql';
 
 export async function createUser(userParams: ICreateUserParams): Promise<User> {

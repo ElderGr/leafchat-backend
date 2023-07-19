@@ -3,7 +3,7 @@ import { init } from 'app';
 import * as userService from '@/services/user-service/index';
 import { clearPostgreDb } from '../helpers';
 import { createUser as createUserFactory } from '../factories/user-factory';
-import { duplicatedEmailError } from 'errors/user-errors';
+import { duplicatedEmailError } from '@/services/user-service/errors';
 import { Faker, es } from '@faker-js/faker';
 import { postgreClient } from '@/config/database';
 import bcrypt from 'bcrypt';
