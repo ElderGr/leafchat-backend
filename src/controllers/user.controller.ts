@@ -1,29 +1,11 @@
 import { Request, Response } from 'express';
 import * as userService from '@/services/user-service/index';
+import { IFindUserParams } from '@/repositories/user-repository';
 
 export async function getUsers(req: Request, res: Response) {
-  return res.json({
-    mes: 'hello world',
-  });
-}
+  const requestParams: IFindUserParams = req.query;
 
-export async function findUser(req: Request, res: Response) {
-  //     const { uid } = req.params;
-  //     try{
-  //         await database.ref(`/User/${uid}`).once('value', function(snapshot) {
-  //             if (snapshot.val() == null) {
-  //                 res.json({ message: "Error: No user found", "result": false});
-  //             } else {
-  //                 const {password, ...obj} = snapshot.val();
-  //                 res.json({
-  //                     ...obj,
-  //                     id: snapshot.ref_.path.pieces_[1]
-  //                 });
-  //             }
-  //         });
-  //     }catch(err){
-  //         return res.json({err});
-  //     }
+  return res.send(await userService.getUser(requestParams));
 }
 
 export async function createUser(req: Request, res: Response) {
