@@ -3,10 +3,27 @@ import { Prisma, User } from '@prisma_config/generated/postgresql';
 
 async function create(createUser: ICreateUserParams) {
   return postgreClient.user.create({
-    data: {
-      ...createUser,
-    },
+    data: createUser,
   });
+}
+
+async function update(userId: string, updatedUser: IUpdateUserParams) {
+  return postgreClient.user.update({
+    where: {
+      id: userId,
+    },
+    data: updatedUser,
+  });
+}
+
+async function findById(id: string) {
+  const params: Prisma.UserFindUniqueArgs = {
+    where: {
+      id,
+    },
+  };
+
+  return postgreClient.user.findUnique(params);
 }
 
 async function findByEmail(email: string, select?: Prisma.UserSelect) {
@@ -40,12 +57,25 @@ async function findMany(findUserParams?: IFindUserParams) {
   return postgreClient.user.findMany(params);
 }
 
+async function remove(userId: string) {
+  return postgreClient.user.delete({
+    where: {
+      id: userId,
+    },
+  });
+}
+
 export type IFindUserParams = Partial<Omit<User, 'password'>>;
+
+export type IUpdateUserParams = Partial<User>;
 
 const userRepository = {
   create,
+  update,
   findByEmail,
   findMany,
+  findById,
+  remove,
 };
 
 export type ICreateUserParams = Pick<User, 'avatar_url' | 'email' | 'name' | 'password' | 'roles'>;

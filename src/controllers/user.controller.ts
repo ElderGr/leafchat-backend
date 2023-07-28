@@ -23,33 +23,25 @@ export async function createUser(req: Request, res: Response) {
 }
 
 export async function updateUser(req: Request, res: Response) {
-  //     const { uid } = req.params;
-  //     let data = req.body;
-  //     try{
-  //         if(isEmpty(data)) throw "Error: empty values are detecteds";
-  //         await database.ref(`/User/${uid}`).update(data, function(err) {
-  //             if (err) {
-  //                 res.send(err);
-  //             } else {
-  //                 res.json({ "message": "successfully update data", "result": true })
-  //             }
-  //         })
-  //     }catch(err){
-  //         return res.status(400).json({err});
-  //     }
+  const { uid } = req.params;
+  const { avatar_url, email, name, password, roles } = req.body;
+
+  const user = await userService.updateUser({
+    id: uid,
+    avatar_url,
+    email,
+    name,
+    password,
+    roles,
+  });
+
+  return res.send(user);
 }
 
 export async function deleteUser(req: Request, res: Response) {
-  //     const { uid } = req.params;
-  //     try{
-  //         await database.ref(`/User/${uid}`).remove(function(err) {
-  //           if (err) {
-  //               res.send(err);
-  //           } else {
-  //               res.json({ message: "success: User deleted.", "result": true })
-  //           }
-  //       })
-  //     }catch(err){
-  //         return res.json({err})
-  //     }
+  const { uid } = req.params;
+
+  await userService.deleteUser(uid);
+
+  return res.status(204).send();
 }
