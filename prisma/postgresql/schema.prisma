@@ -1,10 +1,13 @@
 generator client {
   provider = "prisma-client-js"
+  output = "../generated/postgresql"
+  previewFeatures = ["postgresqlExtensions"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  extensions = [uuidOssp(map: "uuid-ossp")]
 }
 
 model Comments {
@@ -13,21 +16,21 @@ model Comments {
   post_id        String           @db.Uuid
   user_id        String           @db.Uuid
   likes          Int
-  created_at     DateTime         @db.Date
-  updated_at     DateTime         @db.Date
+  create_at      DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
   Post           Post             @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_fk0")
   User           User             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_fk1")
   Comments_files Comments_files[]
 }
 
 model Comments_files {
-  id         String   @id(map: "Comments_files_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  id_comment String   @db.Uuid
-  name       String   @db.VarChar
-  link       String   @db.VarChar
-  created_at DateTime @db.Date
-  updated_at DateTime @db.Date
-  Comments   Comments @relation(fields: [id_comment], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_files_fk0")
+  id         String     @id(map: "Comments_files_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id_comment String     @db.Uuid
+  name       String     @db.VarChar
+  link       String     @db.VarChar
+  create_at  DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  Comments   Comments   @relation(fields: [id_comment], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Comments_files_fk0")
 }
 
 model Post {
@@ -36,8 +39,8 @@ model Post {
   title       String       @db.VarChar
   description String       @db.VarChar
   likes       Int
-  created_at  DateTime     @db.Date
-  updated_at  DateTime     @db.Date
+  create_at   DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
   Comments    Comments[]
   User        User         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Post_fk0")
   Post_files  Post_files[]
@@ -48,18 +51,17 @@ model Post_files {
   name       String   @db.VarChar
   link       String   @db.VarChar
   post_id    String   @db.Uuid
-  created_at DateTime @db.Date
-  updated_at DateTime @db.Date
+  create_at  DateTime   @default(now())
+  updated_at DateTime   @updatedAt
   Post       Post     @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Post_files_fk0")
 }
 
 model Session {
   id         String   @id(map: "Session_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   user_id    String   @db.Uuid
-  email      String   @db.VarChar
-  password   String   @db.VarChar
-  created_at DateTime @db.Date
-  updated_at DateTime @db.Date
+  token      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   User       User     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Session_fk0")
 }
 
@@ -68,8 +70,10 @@ model User {
   name       String     @db.VarChar
   avatar_url String     @db.VarChar
   roles      String     @db.VarChar
-  create_at  DateTime   @db.Date
-  updated_at DateTime   @db.Date
+  email      String     @db.VarChar @unique
+  password   String     @db.VarChar
+  create_at  DateTime   @default(now())
+  updated_at DateTime   @updatedAt
   Comments   Comments[]
   Post       Post[]
   Session    Session[]

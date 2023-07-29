@@ -8,6 +8,7 @@ import http from 'http';
 import { Server } from 'socket.io';
 import { loadEnv } from './config';
 import { handleApplicationErrors } from 'middlewares/error-handling-middleware';
+import { connectMongoClient, connectPostgreDB, disconnectMongoClient, disconnectPostgreDB } from '@/config/database';
 
 loadEnv();
 
@@ -35,7 +36,14 @@ app
 app.use('/files', express.static(path.resolve(__dirname, '..', 'uploads')));
 
 export function init(): Promise<http.Server> {
+  connectMongoClient();
+  connectPostgreDB();
   return Promise.resolve(server);
+}
+
+export async function close(): Promise<void> {
+  await disconnectMongoClient();
+  await disconnectPostgreDB();
 }
 
 export default server;

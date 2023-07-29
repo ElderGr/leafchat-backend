@@ -1,11 +1,11 @@
-import express from 'express'
-import { createPost, deletePost, getPosts } from '@controllers/post.controller'
-import { createLikes, getLikes } from '@controllers/like.controller'
-import { createComment } from '@controllers/comments.controller'
-import uploadConfig from '@config/upload'
-import multer from 'multer'
+import express from 'express';
+import { createPost, deletePost, getPosts } from '@/controllers/post.controller';
+import { createLikes, getLikes } from '@/controllers/like.controller';
+import { createComment } from '@/controllers/comments.controller';
+import uploadConfig from '@/config/upload';
+import multer from 'multer';
 
-const routes = express.Router()
+const routes = express.Router();
 const upload = multer(uploadConfig);
 
 routes.get('/posts', getPosts);
@@ -16,5 +16,4 @@ routes.post('/posts/:postId/like', createLikes);
 //Coments
 routes.post('/posts/:postId/comment', createComment);
 
-
-export default routes
+export default routes;

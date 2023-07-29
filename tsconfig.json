@@ -9,14 +9,9 @@
     "skipLibCheck": true,
     "baseUrl": "src",
     "paths": {
-      "@config/*": ["config/*"],
-      "@controllers/*": ["controllers/*"],
-      "@functions/*": ["functions/*"],
-      "@middleware/*": ["middleware/*"],
-      "@models/*": ["models/*"],
-      "@routes/*": ["routes/*"],
-      "@services/*": ["services/*"],
-      "@repository/*": ["repository/*"],
+      "@/*": ["*"],
+      "@protocols": ["./protocols.ts"],
+      "@prisma_config/*": ["../prisma/*"]
     }
   }
 }
