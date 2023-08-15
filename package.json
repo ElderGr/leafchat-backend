@@ -6,11 +6,18 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon --watch 'src/' --exec 'ts-node -r tsconfig-paths/register ./src/server.ts' -e ts",
     "start": "node src/server.js",
-    "prisma:generate": "npx prisma generate --schema=./prisma/postgresql/schema.prisma && npx prisma generate --schema=./prisma/mongodb/schema.prisma",
+    "dev:load-envs": "dotenv -e .env.development",
+    "seed:run": "prisma db seed",
+    "prisma:generate:postgre": "npx prisma generate --schema=./prisma/postgresql/schema.prisma ",
+    "prisma:generate:mongo": "npx prisma generate --schema=./prisma/mongodb/schema.prisma",
     "prisma:migrate:dev": "npx prisma migrate dev --schema=./prisma/postgresql/schema.prisma",
+    "prisma:run:dev": "npm run prisma:generate:postgre && npm run prisma:generate:mongo && npm run prisma:migrate:dev && npm run seed:run",
     "build": "tsc",
     "test": "cross-env NODE_ENV=development jest",
     "prepare": "husky install"
+  },
+  "prisma": {
+    "seed": "npm run dev:load-envs -- ts-node -r tsconfig-paths/register prisma/seed.ts"
   },
   "keywords": [],
   "author": "",
@@ -44,6 +51,7 @@
     "@types/multer": "^1.4.7",
     "@typescript-eslint/eslint-plugin": "^5.60.1",
     "@typescript-eslint/parser": "^5.60.1",
+    "dotenv-cli": "^7.2.1",
     "eslint": "^8.44.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
