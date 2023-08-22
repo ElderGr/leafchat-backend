@@ -1,6 +1,6 @@
 import express from 'express';
 
-import SessionRoutes from '@/routes/session.routes';
+import SessionRoutes from '@/routes/authenticate.routes';
 import PostRoutes from '@/routes/post.routes';
 import UserRoutes from '@/routes/user.routes';
 import ChatRoutes from '@/routes/chat.routes';

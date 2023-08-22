@@ -10,6 +10,6 @@ export function loadEnv() {
     Use ${path} file to set configs
   `);
 
-  const currentEnvs = dotenv.config({ path });
+  const currentEnvs = dotenv.config();
   dotenvExpand.expand(currentEnvs);
 }
