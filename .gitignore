@@ -333,3 +333,4 @@ coverage/
 build/
 prisma/generated
 .env.*
+uploads/

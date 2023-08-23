@@ -8,12 +8,11 @@ import multer from 'multer';
 const routes = express.Router();
 const upload = multer(uploadConfig);
 
-routes.get('/posts', getPosts);
-routes.post('/posts', upload.single('image'), createPost);
-routes.delete('/posts/:id', deletePost);
-//Likes
-routes.post('/posts/:postId/like', createLikes);
-//Coments
-routes.post('/posts/:postId/comment', createComment);
+routes
+  .get('/posts', getPosts)
+  .post('/posts', upload.array('image'), createPost)
+  .delete('/posts/:id', deletePost)
+  .post('/posts/:postId/like', createLikes)
+  .post('/posts/:postId/comment', createComment);
 
 export default routes;

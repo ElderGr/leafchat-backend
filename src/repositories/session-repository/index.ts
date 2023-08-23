@@ -1,5 +1,4 @@
 import { postgreClient } from '@/config';
-import { Prisma, Session } from '@prisma_config/generated/postgresql';
 
 type ICreateSessionParams = {
   userId: string;

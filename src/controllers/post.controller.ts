@@ -1,68 +1,51 @@
-import { Request, Response } from "express";
+import postService, { ICreatePostParams, IListPostParams } from '@/services/post-service';
+import { Request, Response } from 'express';
 
-export async function getPosts(req: Request, res: Response){
-//   try {
-  //     const items = await database.ref('Post').once('value');
-  //     let posts = [];
+type IFileParam = {
+  fieldname: string;
+  originalname: string;
+  encoding: string;
+  mimetype: string;
+  destination: string;
+  filename: string;
+  path: string;
+  size: number;
+};
 
-  //     items.forEach(item => {
-  //       if(item.val().comments !== undefined && item.val().comments !== null){
-  //         let comments = Object.keys(item.val().comments);
-  //         comments = comments.map(comment => { return { id: comment, ...item.val().comments[comment]} })
-  
-  //         posts.push({
-  //           ...item.val(),
-  //           comments,
-  //           id: item.ref_.path.pieces_[1]
-  //         });
-  //       }else{
-  //         posts.push({
-  //           ...item.val(),
-  //           id: item.ref_.path.pieces_[1]
-  //         });
-  //       }
-  //     })
-  //     return res.json(posts);
-  //   } catch (e) {
-  //     return res.status(400).json({ error: e });
-  //   }
+export async function getPosts(req: Request, res: Response) {
+  const { create_at, id, likes, title, user_id } = req.query as IListPostParams;
+
+  return res.send(
+    await postService.listPost({
+      create_at,
+      id,
+      likes,
+      title,
+      user_id,
+    }),
+  );
 }
 
-export async function createPost(req: Request, res: Response){
-//   let src;
+export async function createPost(req: Request, res: Response) {
+  const { description, title, user_id } = req.body as ICreatePostParams;
+  const files = req.files as IFileParam[];
 
-//   if (req.file !== undefined) {
-//     const { filename: image } = req.file;
-//     src = image;
-//   }
+  const filesName = files.map((file) => ({ filename: file.filename }));
 
-//   var newPost;
-//   const { owner, content } = JSON.parse(req.body.content);
+  const createdPost = await postService.createPost({
+    description,
+    title,
+    user_id,
+    files: filesName,
+  });
 
-//   try {
-//     var newPost = await database.ref('Post').push({
-//       owner,
-//       content,
-//       likes: {},
-//       coments: {},
-//       image: req.file !== undefined ? `http://localhost:5000/files/${src}` : '',
-//       timestamp: new Date().getTime()
-//     }, function (err) {
-//       if (err) {
-//         res.send(err);
-//       } else {
-//         res.json({ newPost });
-//       }
-//     })
-//   } catch (err) {
-//     return res.json({ err })
-//   }
+  return res.send(createdPost);
 }
 
-export async function deletePost(req: Request, res: Response){
-//   const {id} = req.params;
+export async function deletePost(req: Request, res: Response) {
+  const { id } = req.params;
 
-  //   await database.ref(`Post/${id}`).remove();
+  await postService.removePost(id);
 
-  //   return res.json({status: 'deletado com sucesso'});
+  return res.status(200).end();
 }
