@@ -8,6 +8,12 @@
     "outDir": "build",
     "skipLibCheck": true,
     "baseUrl": "src",
+    "typeRoots": [
+      "./src/@types",
+      "src/custom_typings",
+      "./@types",
+      "./node_modules/@types"
+    ],
     "paths": {
       "@/*": ["*"],
       "@protocols": ["./protocols.ts"],

@@ -1,24 +1,41 @@
 import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import httpStatus from 'http-status';
+import * as jwt from 'jsonwebtoken';
 
-export default async function authenticateToken(req: Request, res: Response, next: NextFunction) {
-  // const { email, password }  = req.body;
-  // database.ref('/User').on('value', function(snapshot) {
-  //     try{
-  //         var user = '';
-  //         snapshot.forEach(item =>{
-  //             if(item.val().email === email && item.val().password === password){
-  //                 user = item.val();
-  //             }
-  //         })
-  //         if(user !== ''){
-  //             var token = jwt.sign(user, 'shhhhhh');
-  //             return res.json({token : token})
-  //         }else{
-  //             return res.status(400).json({error: 'Login not found, check email and password again'})
-  //         }
-  //     }catch(e){
-  //         return res.status(400).json({error: e})
-  //     }
-  // })
+import { unauthorizedError } from '@/errors/unauthorized-error';
+import { postgreClient } from '@/config';
+
+export async function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+  const authHeader = req.header('Authorization');
+  if (!authHeader) return generateUnauthorizedResponse(res);
+
+  const token = authHeader.split(' ')[1];
+  if (!token) return generateUnauthorizedResponse(res);
+
+  try {
+    const { userId } = jwt.verify(token, process.env.JWT_SECRET || '') as JWTPayload;
+
+    const session = await postgreClient.session.findFirst({
+      where: {
+        token,
+      },
+    });
+    if (!session) return generateUnauthorizedResponse(res);
+
+    req.userId = userId;
+
+    return next();
+  } catch (err) {
+    return generateUnauthorizedResponse(res);
+  }
 }
+
+function generateUnauthorizedResponse(res: Response) {
+  res.status(httpStatus.UNAUTHORIZED).send(unauthorizedError());
+}
+
+export type AuthenticatedRequest = Request & JWTPayload;
+
+type JWTPayload = {
+  userId: string;
+};

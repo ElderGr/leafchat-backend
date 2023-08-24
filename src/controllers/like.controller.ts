@@ -1,50 +1,12 @@
 import { Request, Response } from 'express';
+import httpStatus from 'http-status';
+import likeService from '@/services/likes-service';
 
-export async function getLikes(req: Request, res: Response){
-//     try {
-//     /* var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
-//        starCountRef.on('value', function(snapshot) {
-//        updateStarCount(postElement, snapshot.val());
-//      }); */
-//       const items = await database.ref('Post').once('value');
-     
-//       let posts = [];
+export async function addLikes(req: Request, res: Response) {
+  const { postId } = req.params;
+  const userId = req.userId;
 
-//       items.forEach(item =>{
-//           posts.push({
-//               ...item.val(),
-//               id: item.ref_.path.pieces_[1]
-//           });
-//       })
-//       return res.json(posts);
-}
+  await likeService.addOrRemove(postId, userId);
 
-export async function createLikes(req: Request, res: Response){
-//     const { postId } = req.params;
-//     const { user } = req.headers;
-
-//     let targetPost = await database.ref('Post/' + postId+'/likes').once('value');
-//     let likes = [];
-
-    
-//     targetPost.forEach(async item =>{
-//       likes.push(item.val());
-//     })
-
-//     if(likes.length === 0){
-//       likes = [user];
-//     }else{
-//       if(likes.indexOf(user) === -1){
-//         likes = likes.push(user);
-
-//       }else{
-//         likes = likes.filter(item => {return item !== user})
-
-//       }
-//     }
-    
-//     await database.ref(`Post/${postId}/likes`).set(likes);
-
-//     return res.json(likes)
-
+  return res.status(httpStatus.OK).end();
 }

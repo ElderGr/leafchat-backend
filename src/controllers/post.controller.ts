@@ -1,3 +1,4 @@
+import { AuthenticatedRequest } from '@/middlewares/authentication.middleware';
 import postService, { ICreatePostParams, IListPostParams } from '@/services/post-service';
 import { Request, Response } from 'express';
 

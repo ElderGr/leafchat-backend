@@ -38,12 +38,22 @@ model Post {
   user_id     String       @db.Uuid
   title       String       @db.VarChar
   description String       @db.VarChar
-  likes       Int
   create_at   DateTime     @default(now())
   updated_at  DateTime     @updatedAt
   Comments    Comments[]
   User        User         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Post_fk0")
   Post_files  Post_files[]
+  Likes       Likes[]
+}
+
+model Likes {
+  id          String       @id(map: "Likes_pk") @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  user_id     String       @db.Uuid
+  post_id     String       @db.Uuid
+  create_at   DateTime     @default(now())
+  updated_at  DateTime     @updatedAt
+  User        User         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Like_fk0")
+  Post        Post         @relation(fields: [post_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "Like_fk1")
 }
 
 model Post_files {
@@ -77,4 +87,5 @@ model User {
   Comments   Comments[]
   Post       Post[]
   Session    Session[]
+  Likes      Likes[]
 }

@@ -47,11 +47,11 @@ async function list({ user_id, create_at, id, likes, title }: Partial<IListPostR
       id: true,
       description: true,
       title: true,
-      likes: true,
       user_id: true,
       create_at: true,
       updated_at: true,
       Post_files: true,
+      Likes: true,
     },
   };
 
