@@ -1,4 +1,3 @@
-import { AuthenticatedRequest } from '@/middlewares/authentication.middleware';
 import postService, { ICreatePostParams, IListPostParams } from '@/services/post-service';
 import { Request, Response } from 'express';
 
@@ -14,13 +13,12 @@ type IFileParam = {
 };
 
 export async function getPosts(req: Request, res: Response) {
-  const { create_at, id, likes, title, user_id } = req.query as IListPostParams;
+  const { create_at, id, title, user_id } = req.query as IListPostParams;
 
   return res.send(
     await postService.listPost({
       create_at,
       id,
-      likes,
       title,
       user_id,
     }),

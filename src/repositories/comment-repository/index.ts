@@ -10,7 +10,6 @@ async function create({ post_id, user_id, body }: IAddComment) {
       post_id,
       user_id,
       body,
-      likes: 0,
     },
   });
 }

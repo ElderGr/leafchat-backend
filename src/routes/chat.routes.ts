@@ -2,7 +2,6 @@ import express from 'express';
 import { createChat, deleteChat, getChat, teste, createChatAudioMessage } from '@/controllers/chat.controller';
 import uploadConfig from '@/config/upload';
 import multer from 'multer';
-import { authenticateToken } from '@/middlewares/authentication.middleware';
 
 const routes = express.Router();
 const upload = multer(uploadConfig);

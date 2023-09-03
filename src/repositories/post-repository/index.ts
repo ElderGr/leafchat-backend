@@ -28,7 +28,6 @@ async function findById(id: string) {
 async function create({ description, files, title, user_id }: ICreatePostParams) {
   return postgreClient.post.create({
     data: {
-      likes: 0,
       description,
       title,
       user_id,

@@ -9,6 +9,12 @@ import CommentsRoutes from '@/routes/comment.routes';
 
 const routes = express.Router();
 
-routes.use(SessionRoutes).use(UserRoutes).use(PostRoutes).use(ChatRoutes).use(MessageRoutes).use(CommentsRoutes);
+routes
+  .use('/auth', SessionRoutes)
+  .use(UserRoutes)
+  .use(PostRoutes)
+  .use(ChatRoutes)
+  .use(MessageRoutes)
+  .use(CommentsRoutes);
 
 export default routes;

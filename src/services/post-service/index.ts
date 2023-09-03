@@ -39,11 +39,10 @@ async function createPost({ description, title, user_id, files }: ICreatePostPar
   return createdPost;
 }
 
-async function listPost({ create_at, id, likes, title, user_id }: IListPostParams) {
+async function listPost({ create_at, id, title, user_id }: IListPostParams) {
   return await postRepository.list({
     create_at,
     id: id?.split(','),
-    likes,
     title,
     user_id: user_id?.split(','),
   });
