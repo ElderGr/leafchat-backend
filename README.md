@@ -48,4 +48,9 @@ yarn add multer v1.15.2
 
 [x] Husky        | setup
 [ ] Husky        | include conventional commit pattern
+
+[] Add status in user model
+[] Improve role/access user control
+
 - https://duncanlew.medium.com/getting-started-with-husky-and-lint-staged-for-pre-commit-hooks-c2764d8c9ae
+

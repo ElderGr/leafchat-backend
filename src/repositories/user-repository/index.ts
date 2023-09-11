@@ -17,19 +17,25 @@ async function update(userId: string, updatedUser: IUpdateUserParams) {
 }
 
 async function findById(id: string) {
-  const params: Prisma.UserFindUniqueArgs = {
+  const params: Prisma.UserFindFirstArgs = {
     where: {
       id,
+      deleted_at: {
+        equals: null,
+      },
     },
   };
 
-  return postgreClient.user.findUnique(params);
+  return postgreClient.user.findFirst(params);
 }
 
 async function findByEmail(email: string, select?: Prisma.UserSelect) {
-  const params: Prisma.UserFindUniqueArgs = {
+  const params: Prisma.UserFindFirstArgs = {
     where: {
       email,
+      deleted_at: {
+        equals: null,
+      },
     },
   };
 
@@ -37,7 +43,7 @@ async function findByEmail(email: string, select?: Prisma.UserSelect) {
     params.select = select;
   }
 
-  return postgreClient.user.findUnique(params);
+  return postgreClient.user.findFirst(params);
 }
 
 async function findMany(findUserParams?: IFindUserParams) {
@@ -52,15 +58,21 @@ async function findMany(findUserParams?: IFindUserParams) {
         in: findUserParams?.roles?.split(','),
         mode: 'insensitive',
       },
+      deleted_at: {
+        equals: null,
+      },
     },
   };
   return postgreClient.user.findMany(params);
 }
 
-async function remove(userId: string) {
-  return postgreClient.user.delete({
+async function remove(id: string) {
+  return postgreClient.user.update({
     where: {
-      id: userId,
+      id,
+    },
+    data: {
+      deleted_at: new Date(),
     },
   });
 }
