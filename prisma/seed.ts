@@ -1,4 +1,4 @@
-import { Faker, pt_BR } from '@faker-js/faker';
+import { Faker, faker, pt_BR } from '@faker-js/faker';
 import { PrismaClient as PostgreClient } from './generated/postgresql';
 import bcrypt from 'bcrypt';
 
@@ -30,7 +30,35 @@ async function main() {
     }
   }
 
-  console.log({ users: createdUsers });
+  let post = await postgre.post.findFirst();
+  const createdPost = [];
+  if (!post) {
+    for (let i = 0; i < 3; i++) {
+      post = await postgre.post.create({
+        data: {
+          title: faker.lorem.word(),
+          description: faker.lorem.text(),
+          user_id: user?.id ? user.id : createdUsers[0].id,
+          Comments: {
+            createMany: {
+              data: [
+                { body: faker.lorem.paragraphs(), user_id: createdUsers[0].id },
+                { body: faker.lorem.paragraphs(), user_id: createdUsers[0].id },
+                { body: faker.lorem.paragraphs(), user_id: createdUsers[0].id },
+              ],
+            },
+          },
+        },
+      });
+
+      createdPost.push(post);
+    }
+  }
+
+  console.log({
+    users: createdUsers,
+    createdPost,
+  });
 }
 
 main()

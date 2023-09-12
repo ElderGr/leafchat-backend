@@ -50,7 +50,12 @@ async function list({ user_id, create_at, id, likes, title }: Partial<IListPostR
       create_at: true,
       updated_at: true,
       Post_files: true,
-      Likes: true,
+      _count: {
+        select: {
+          Likes: true,
+          Comments: true,
+        },
+      },
     },
   };
 
