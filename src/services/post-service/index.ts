@@ -15,7 +15,6 @@ export type IListPostParams = Partial<Omit<Post, 'description' | 'updated_at'>>;
 
 async function createPost({ description, title, user_id, files }: ICreatePostParams): Promise<Post> {
   const user = await userRepository.findById(user_id);
-
   if (!user) {
     throw nonExistentUserError();
   }
