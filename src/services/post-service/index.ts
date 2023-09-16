@@ -11,7 +11,9 @@ export type ICreatePostParams = Pick<Post, 'title' | 'description' | 'user_id'> 
   }[];
 };
 
-export type IListPostParams = Partial<Omit<Post, 'description' | 'updated_at'>>;
+export type IListPostParams = Partial<Omit<Post, 'description' | 'updated_at'>> & {
+  take?: number;
+};
 
 async function createPost({ description, title, user_id, files }: ICreatePostParams): Promise<Post> {
   const user = await userRepository.findById(user_id);
@@ -44,7 +46,7 @@ async function listPost({ create_at, id, title, user_id, take }: IListPostParams
     id: id?.split(','),
     title,
     user_id: user_id?.split(','),
-    take
+    take,
   });
 }
 
