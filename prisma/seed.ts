@@ -33,7 +33,7 @@ async function main() {
   let post = await postgre.post.findFirst();
   const createdPost = [];
   if (!post) {
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 40; i++) {
       post = await postgre.post.create({
         data: {
           title: faker.lorem.word(),
