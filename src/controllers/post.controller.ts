@@ -13,7 +13,7 @@ type IFileParam = {
 };
 
 export async function getPosts(req: Request, res: Response) {
-  const { create_at, id, title, user_id } = req.query as IListPostParams;
+  const { create_at, id, title, user_id, take } = req.query as IListPostParams;
 
   return res.send(
     await postService.listPost({
@@ -21,6 +21,7 @@ export async function getPosts(req: Request, res: Response) {
       id,
       title,
       user_id,
+      take: take ? Number(take) : undefined,
     }),
   );
 }

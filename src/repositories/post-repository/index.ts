@@ -15,6 +15,7 @@ export type IListPostRepositoryParams = {
   id: string[];
   likes: number;
   title: string;
+  take: number;
 };
 
 async function findById(id: string) {
@@ -40,7 +41,7 @@ async function create({ description, files, title, user_id }: ICreatePostParams)
   });
 }
 
-async function list({ user_id, create_at, id, likes, title }: Partial<IListPostRepositoryParams>) {
+async function list({ user_id, create_at, id, likes, title, take }: Partial<IListPostRepositoryParams>) {
   const params: Prisma.PostFindManyArgs = {
     select: {
       id: true,
@@ -57,6 +58,7 @@ async function list({ user_id, create_at, id, likes, title }: Partial<IListPostR
         },
       },
     },
+    take
   };
 
   if (user_id && user_id?.length > 0) {
