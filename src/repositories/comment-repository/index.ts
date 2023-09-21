@@ -19,6 +19,9 @@ async function list({ post_id }: IListComment) {
     where: {
       post_id,
     },
+    include: {
+      User: true
+    }
   });
 }
 
