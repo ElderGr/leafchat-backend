@@ -1,22 +1,24 @@
+import { AuthenticatedRequest } from '@/middlewares/authentication.middleware';
+import { ChatService } from '@/services/chats-service';
 import { Request, Response } from 'express';
 
 export async function getChat(req: Request, res: Response) {
-  // const items = await database.ref('/Chats').once('value');
-  // const { user } = req.headers;
-  // let chats = [];
-  // items.forEach(item => {
-  //     if (item.val().participants.indexOf(user) !== -1) {
-  //         chats.push({
-  //             ...item.val(),
-  //             messages: Object.values(item.val().messages),
-  //             id: item.ref_.path.pieces_[1]
-  //         });
-  //     }
-  // })
-  // return res.json(chats)
+  const chats = await ChatService.findAll();
+  return res.send(chats);
 }
 
-export async function createChat(req: Request, res: Response) {
+export async function createChat(req: AuthenticatedRequest, res: Response) {
+  const userId = req.userId;
+  const { participants, content, contentType, owner } = req.body;
+
+  const chat = await ChatService.create({
+    participants,
+    owner: userId,
+    content,
+    contentType,
+  });
+
+  return res.send(chat);
   // let src;
   // if (req.file !== undefined) {
   //     const { filename: image } = req.file;
@@ -65,11 +67,6 @@ export async function deleteChat(req: Request, res: Response) {
   // const {chatid} = req.params;
   // await database.ref(`Chats/${chatid}`).remove();
   // return res.json({res: 'teste'})
-}
-
-export async function teste(req: Request, res: Response) {
-  // const items = await database.ref('/Teste').once('value');
-  // return res.json(items)
 }
 
 export async function createChatAudioMessage(req: Request, res: Response) {

@@ -12,6 +12,7 @@
     "prisma:generate:mongo": "npx prisma generate --schema=./prisma/mongodb/schema.prisma",
     "prisma:migrate:dev": "npx prisma migrate dev --schema=./prisma/postgresql/schema.prisma",
     "prisma:run:dev": "npm run prisma:generate:postgre && npm run prisma:generate:mongo && npm run prisma:migrate:dev && npm run seed:run",
+    "project:setup": "docker compose up -d && npm run prisma:run:dev",
     "build": "tsc",
     "test": "cross-env NODE_ENV=development jest",
     "prepare": "husky install"

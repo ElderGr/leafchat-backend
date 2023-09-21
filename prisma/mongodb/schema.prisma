@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output = "../generated/mongodb"
+  output   = "../generated/mongodb"
 }
 
 datasource mongodb {
@@ -8,28 +8,34 @@ datasource mongodb {
   url      = env("MONGODB_URL")
 }
 
-model Chat {
-  id           String        @id @default(auto()) @map("_id") @mongodb.ObjectId
-  createdAt    DateTime      @default(now())
-  participants Participant[]
-  messages     Message[]
+model UserProfile {
+  id            String @id @default(auto()) @map("_id") @mongodb.ObjectId
+  relationalId  String @unique
+  username      String
+  email         String @unique
+  profile_picture String?
+  chat      Chat?        @relation(fields: [chatId], references: [id])
+  chatId    String?      @mongodb.ObjectId
+  messages      Message[]
+  // Add other user-related fields here
 }
 
-model Participant {
-  id        String    @id @default(auto()) @map("_id") @mongodb.ObjectId
-  userId    String
-  chat      Chat      @relation(fields: [chatId], references: [id])
-  chatId    String    @mongodb.ObjectId
-  createdAt DateTime  @default(now())
-  Message   Message[]
+model Chat {
+  id            String @id @map("_id") @default(auto()) @mongodb.ObjectId
+  participants  UserProfile[]
+  messages      Message[]
+  created_at    DateTime    @default(now())
 }
 
 model Message {
-  id        String      @id @default(auto()) @map("_id") @mongodb.ObjectId
-  content   String
-  sender    Participant @relation(fields: [senderId], references: [id])
-  senderId  String      @mongodb.ObjectId
-  chat      Chat        @relation(fields: [chatId], references: [id])
-  chatId    String      @mongodb.ObjectId
-  createdAt DateTime    @default(now())
+  id          String        @id @map("_id") @default(auto()) @mongodb.ObjectId
+  sender      UserProfile   @relation(fields: [senderId], references: [id])
+  senderId    String        @mongodb.ObjectId
+  chat        Chat?         @relation(fields: [chatId], references: [id])
+  chatId      String?       @mongodb.ObjectId
+  content     String
+  contentType   String
+  created_at     DateTime    @default(now())
 }
+
+
