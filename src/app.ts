@@ -9,25 +9,55 @@ import { Server } from 'socket.io';
 import { loadEnv } from './config';
 import { handleApplicationErrors } from 'middlewares/error-handling-middleware';
 import { connectMongoClient, connectPostgreDB, disconnectMongoClient, disconnectPostgreDB } from '@/config/database';
+import messageService from './services/message-service';
+import { ChatService } from './services/chats-service';
 
 loadEnv();
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
+export const server = http.createServer(app);
+export const io = new Server(server);
 
 io.on('connection', (socket) => {
   console.log('a user connected');
-  socket.on('message', () => {
-    console.log('message');
+
+  socket.on('chat_list', async () => {
+    const chats = await ChatService.findAll();
+    socket.emit('chat_list', chats);
   });
+
+  socket.on('message_list', async (chat) => {
+    const message = await messageService.list({ chatId: chat });
+    socket.emit('message_list', message);
+  });
+
+  // socket.on('message_create', async (data) => {
+  //   await messageService.create({
+  //     chatId: data.chatId,
+  //     content: data.content,
+  //     contentType: data.contentType,
+  //     owner: data.owner
+  //    })
+
+  //    const messages = await messageService.list({ chatId: data.chatId })
+
+  // });
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
 });
 
+io.on('connect_error', (err) => {
+  console.log(`connect_error due to ${err.message}`);
+});
+
 app
-  .use(cors())
+  .use(
+    cors({
+      origin: '*',
+    }),
+  )
   .use(express.json())
   .get('/health', (_req, res) => res.send('OK!'))
   .use(routes)
@@ -45,5 +75,3 @@ export async function close(): Promise<void> {
   await disconnectMongoClient();
   await disconnectPostgreDB();
 }
-
-export default server;

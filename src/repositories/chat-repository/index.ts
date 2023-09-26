@@ -21,25 +21,25 @@ function findAll() {
 function create({ participants, owner, content, contentType }: CreateChatDto) {
   return mongoClient.chat.create({
     data: {
-      participants: {
-        connectOrCreate: participants.map((participant) => ({
-          where: {
-            relationalId: participant.relationalId,
-          },
-          create: participant,
-        })),
-      },
-      messages: {
-        create: {
-          content: content,
-          contentType: contentType,
-          sender: {
-            connect: {
-              relationalId: owner,
-            },
-          },
-        },
-      },
+      // participants: {
+      //   connectOrCreate: participants.map((participant) => ({
+      //     where: {
+      //       relationalId: participant.relationalId,
+      //     },
+      //     create: participant,
+      //   })),
+      // },
+      // messages: {
+      //   create: {
+      //     content: content,
+      //     contentType: contentType,
+      //     // sender: {
+      //     //   connect: {
+      //     //     relationalId: owner,
+      //     //   },
+      //     // },
+      //   },
+      // },
     },
   });
 }

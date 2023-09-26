@@ -1,3 +1,4 @@
+import { io } from '@/app';
 import { AuthenticatedRequest } from '@/middlewares/authentication.middleware';
 import { ChatService } from '@/services/chats-service';
 import { Request, Response } from 'express';
@@ -9,7 +10,7 @@ export async function getChat(req: Request, res: Response) {
 
 export async function createChat(req: AuthenticatedRequest, res: Response) {
   const userId = req.userId;
-  const { participants, content, contentType, owner } = req.body;
+  const { participants, content, contentType } = req.body;
 
   const chat = await ChatService.create({
     participants,

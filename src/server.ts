@@ -1,9 +1,9 @@
-import app, { init } from './app';
+import { init, server, io } from './app';
 
 const port = process.env.PORT || 5000;
 
 init().then(() => {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Server up in ${port} port!`);
   });
 });

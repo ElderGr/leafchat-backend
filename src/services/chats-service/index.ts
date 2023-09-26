@@ -12,7 +12,7 @@ async function create({ participants, owner, content, contentType }: CreateChatD
 }
 
 async function findAll() {
-  return;
+  return await ChatRepository.findAll();
 }
 
 export const ChatService = {

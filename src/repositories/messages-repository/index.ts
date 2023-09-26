@@ -24,16 +24,6 @@ async function create({ chatId, content, contentType, owner }: CreateMessageDto)
       contentType,
       chatId,
       senderId: owner,
-      // chat: {
-      //   connect: {
-      //     id: chatId
-      //   }
-      // },
-      // sender: {
-      //   connect: {
-      //     id: owner
-      //   }
-      // }
     },
   });
 }

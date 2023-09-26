@@ -8,29 +8,16 @@ datasource mongodb {
   url      = env("MONGODB_URL")
 }
 
-model UserProfile {
-  id            String @id @default(auto()) @map("_id") @mongodb.ObjectId
-  relationalId  String @unique
-  username      String
-  email         String @unique
-  profile_picture String?
-  chat      Chat?        @relation(fields: [chatId], references: [id])
-  chatId    String?      @mongodb.ObjectId
-  messages      Message[]
-  // Add other user-related fields here
-}
-
 model Chat {
   id            String @id @map("_id") @default(auto()) @mongodb.ObjectId
-  participants  UserProfile[]
+  participants  String[]    
   messages      Message[]
   created_at    DateTime    @default(now())
 }
 
 model Message {
   id          String        @id @map("_id") @default(auto()) @mongodb.ObjectId
-  sender      UserProfile   @relation(fields: [senderId], references: [id])
-  senderId    String        @mongodb.ObjectId
+  senderId    String        @mongodb.String
   chat        Chat?         @relation(fields: [chatId], references: [id])
   chatId      String?       @mongodb.ObjectId
   content     String

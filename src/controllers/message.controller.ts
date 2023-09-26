@@ -1,5 +1,7 @@
+import { io } from '@/app';
 import messageService from '@/services/message-service';
 import { Request, Response } from 'express';
+import * as fs from 'fs';
 
 export async function findAllMessages(req: Request, res: Response) {
   const { chatId } = req.query;
@@ -12,6 +14,34 @@ export async function findAllMessages(req: Request, res: Response) {
 
 export async function createMessage(req: Request, res: Response) {
   const { chatId, content, contentType, owner } = req.body;
+  const audio = req.file;
+
+  if (contentType === 'audio') {
+    if (!audio) {
+      throw {
+        message: 'No audio file',
+      };
+    }
+
+    const fileName = `${owner}___${new Date().getTime()}.wav`;
+    const uploadLocation = `./uploads/blob/${fileName}`;
+    fs.writeFileSync(uploadLocation, Buffer.from(new Uint8Array(audio.buffer)));
+
+    const createMessage = await messageService.create({
+      chatId,
+      content: `${process.env.BACKEND_URL}/files/blob/${fileName}`,
+      contentType,
+      owner,
+    });
+
+    const messages = await messageService.list({
+      chatId: chatId as string,
+    });
+
+    io.emit('message_list', messages);
+
+    return res.send(createMessage);
+  }
 
   const createMessage = await messageService.create({
     chatId,
@@ -20,7 +50,14 @@ export async function createMessage(req: Request, res: Response) {
     owner,
   });
 
+  const messages = await messageService.list({
+    chatId: chatId as string,
+  });
+
+  io.emit('message_list', messages);
+
   return res.send(createMessage);
+  // return res.send(createMessage);
   //         let src;
   //         if(req.file !== undefined) {
   //             const { filename: image } = req.file;
