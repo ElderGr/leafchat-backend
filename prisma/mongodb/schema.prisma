@@ -18,8 +18,8 @@ model Chat {
 model Message {
   id          String        @id @map("_id") @default(auto()) @mongodb.ObjectId
   senderId    String        @mongodb.String
-  chat        Chat?         @relation(fields: [chatId], references: [id])
-  chatId      String?       @mongodb.ObjectId
+  chatId      String        @mongodb.ObjectId
+  chat        Chat          @relation(fields: [chatId], references: [id])
   content     String
   contentType   String
   created_at     DateTime    @default(now())
