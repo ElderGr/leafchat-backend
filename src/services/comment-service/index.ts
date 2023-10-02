@@ -5,10 +5,15 @@ import { postNotFoundError } from '../post-service/error';
 import { Comments } from '@prisma_config/generated/postgresql';
 import commentRepository from '@/repositories/comment-repository';
 
-type IAddComment = Pick<Comments, 'post_id' | 'user_id' | 'body'>;
+type IAddComment = Pick<Comments, 'post_id' | 'user_id' | 'body'> & {
+  files: {
+    filename: string;
+  }[];
+}
+
 type IListComments = Pick<Comments, 'post_id'>;
 
-async function add({ body, post_id, user_id }: IAddComment): Promise<Comments> {
+async function add({ body, post_id, user_id, files }: IAddComment): Promise<Comments> {
   const user = await userRepository.findById(user_id);
   if (!user) {
     throw nonExistentUserError();
@@ -20,10 +25,19 @@ async function add({ body, post_id, user_id }: IAddComment): Promise<Comments> {
     throw postNotFoundError();
   }
 
+  
+
+  const formatFiles = files.map((file) => ({
+    name: file.filename,
+    link: `${process.env.BACKEND_URL}/files/${file.filename}`,
+  }));
+
+
   const createdComment = await commentRepository.create({
     body,
     post_id,
     user_id,
+    files: formatFiles
   });
 
   return createdComment;

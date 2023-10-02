@@ -6,6 +6,7 @@ import UserRoutes from '@/routes/user.routes';
 import ChatRoutes from '@/routes/chat.routes';
 import MessageRoutes from '@/routes/message.routes';
 import CommentsRoutes from '@/routes/comment.routes';
+import { authenticateToken } from '@/middlewares/authentication.middleware';
 
 const routes = express.Router();
 
@@ -15,6 +16,6 @@ routes
   .use(PostRoutes)
   .use(ChatRoutes)
   .use(MessageRoutes)
-  .use(CommentsRoutes);
+  .use(authenticateToken, CommentsRoutes);
 
 export default routes;
