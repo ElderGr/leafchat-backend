@@ -1,27 +1,70 @@
 import { mongoClient } from '@/config';
+import { FindAllChatsDto } from '@/domain/chat/chat.dto';
 
 export type CreateChatDto = {
-  owner: string;
   participants: string[];
-  content: string;
-  contentType: string;
 };
 
-function findAll() {
-  return mongoClient.chat.findMany();
+export type UpdateChatDto = {
+  id: string;
+  participants: string[];
+};
+
+function findAll({ participants }: FindAllChatsDto) {
+  const params = {
+    where: {},
+  };
+
+  if (participants && participants?.length > 0) {
+    params.where = {
+      participants: {
+        hasSome: participants,
+      },
+    };
+  }
+
+  return mongoClient.chat.findMany(params);
 }
 
-function create({ participants, owner, content, contentType }: CreateChatDto) {
+function findByParticipants({ participants }: FindAllChatsDto) {
+  const params = {
+    where: {},
+  };
+
+  if (participants && participants?.length > 0) {
+    params.where = {
+      participants: {
+        hasEvery: participants,
+      },
+    };
+  }
+
+  return mongoClient.chat.findFirst(params);
+}
+
+function detail(id: string) {
+  return mongoClient.chat.findFirst({
+    where: {
+      id,
+    },
+  });
+}
+
+function create({ participants }: CreateChatDto) {
   return mongoClient.chat.create({
     data: {
-      participants: participants,
-      messages: {
-        create: {
-          content,
-          contentType,
-          senderId: owner,
-        },
-      },
+      participants,
+    },
+  });
+}
+
+function update({ id, participants }: UpdateChatDto) {
+  return mongoClient.chat.update({
+    where: {
+      id,
+    },
+    data: {
+      participants,
     },
   });
 }
@@ -29,4 +72,7 @@ function create({ participants, owner, content, contentType }: CreateChatDto) {
 export const ChatRepository = {
   findAll,
   create,
+  detail,
+  update,
+  findByParticipants,
 };

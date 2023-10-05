@@ -22,7 +22,7 @@ io.on('connection', (socket) => {
   console.log('a user connected');
 
   socket.on('chat_list', async () => {
-    const chats = await ChatService.findAll();
+    const chats = await ChatService.findAll({});
     socket.emit('chat_list', chats);
   });
 

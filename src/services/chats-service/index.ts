@@ -1,18 +1,22 @@
+import { FindAllChatsDto } from '@/domain/chat/chat.dto';
 import { ChatRepository, CreateChatDto } from '@/repositories/chat-repository';
 
-async function create({ participants, owner, content, contentType }: CreateChatDto) {
-  const createdChat = await ChatRepository.create({
-    content,
-    contentType,
-    owner,
+async function create({ participants }: CreateChatDto) {
+  let chat = await ChatRepository.findByParticipants({
     participants,
   });
 
-  return createdChat;
+  if (!chat) {
+    chat = await ChatRepository.create({
+      participants,
+    });
+  }
+
+  return chat;
 }
 
-async function findAll() {
-  return await ChatRepository.findAll();
+async function findAll(params: FindAllChatsDto) {
+  return await ChatRepository.findAll(params);
 }
 
 export const ChatService = {
