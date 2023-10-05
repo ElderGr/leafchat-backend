@@ -3,9 +3,14 @@ import * as userService from '@/services/user-service/index';
 import { IFindUserParams } from '@/repositories/user-repository';
 
 export async function getUsers(req: Request, res: Response) {
-  const requestParams: IFindUserParams = req.query;
+  const params: IFindUserParams = req.query;
 
-  return res.send(await userService.getUser(requestParams));
+  return res.send(
+    await userService.getUser({
+      ...params,
+      id: params.id?.split('') || [],
+    }),
+  );
 }
 
 export async function createUser(req: Request, res: Response) {

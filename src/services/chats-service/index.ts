@@ -1,5 +1,6 @@
 import { FindAllChatsDto } from '@/domain/chat/chat.dto';
 import { ChatRepository, CreateChatDto } from '@/repositories/chat-repository';
+import { io } from '@/app';
 
 async function create({ participants }: CreateChatDto) {
   let chat = await ChatRepository.findByParticipants({
@@ -11,6 +12,8 @@ async function create({ participants }: CreateChatDto) {
       participants,
     });
   }
+  const chats = await ChatService.findAll({});
+  io.emit('chat_list', chats);
 
   return chat;
 }

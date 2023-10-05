@@ -46,23 +46,45 @@ async function findByEmail(email: string, select?: Prisma.UserSelect) {
   return postgreClient.user.findFirst(params);
 }
 
-async function findMany(findUserParams?: IFindUserParams) {
+async function findMany({ name, roles, id }: IFindUserDto) {
   const params: Prisma.UserFindManyArgs = {
     where: {
-      ...findUserParams,
-      name: {
-        contains: findUserParams?.name,
-        mode: 'insensitive',
-      },
-      roles: {
-        in: findUserParams?.roles?.split(','),
-        mode: 'insensitive',
-      },
       deleted_at: {
         equals: null,
       },
     },
   };
+
+  if (name) {
+    params.where = {
+      ...params.where,
+      name: {
+        contains: name,
+        mode: 'insensitive',
+      },
+    };
+  }
+
+  if (roles) {
+    params.where = {
+      ...params.where,
+      roles: {
+        in: roles?.split(','),
+        mode: 'insensitive',
+      },
+    };
+  }
+
+  if (id && id.length > 0) {
+    params.where = {
+      ...params.where,
+      id: {
+        in: id,
+        mode: 'insensitive',
+      },
+    };
+  }
+
   return postgreClient.user.findMany(params);
 }
 
@@ -77,7 +99,27 @@ async function remove(id: string) {
   });
 }
 
-export type IFindUserParams = Partial<Omit<User, 'password'>>;
+export type IFindUserDto = {
+  id?: string[];
+  name?: string;
+  avatar_url?: string;
+  roles?: string;
+  email?: string;
+  create_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date | null;
+};
+
+export type IFindUserParams = {
+  id?: string;
+  name?: string;
+  avatar_url?: string;
+  roles?: string;
+  email?: string;
+  create_at?: Date;
+  updated_at?: Date;
+  deleted_at?: Date | null;
+};
 
 export type IUpdateUserParams = Partial<User>;
 

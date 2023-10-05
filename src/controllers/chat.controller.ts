@@ -1,10 +1,7 @@
-import { io } from '@/app';
-import { FindAllChatsControllerParams, FindAllChatsDto } from '@/domain/chat/chat.dto';
+import { FindAllChatsControllerParams } from '@/domain/chat/chat.dto';
 import { AuthenticatedRequest } from '@/middlewares/authentication.middleware';
 import { ChatService } from '@/services/chats-service';
-import messageService from '@/services/message-service';
 import { Request, Response } from 'express';
-import * as fs from 'fs';
 
 export async function getChat(req: Request, res: Response) {
   const { participants } = req.query as FindAllChatsControllerParams;

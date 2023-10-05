@@ -1,4 +1,4 @@
-import userRepository, { ICreateUserParams, IFindUserParams } from 'repositories/user-repository';
+import userRepository, { ICreateUserParams, IFindUserDto, IFindUserParams } from 'repositories/user-repository';
 import bcrypt from 'bcrypt';
 import { duplicatedEmailError, nonExistentUserError } from '@/services/user-service/errors';
 import { User } from '@prisma_config/generated/postgresql';
@@ -22,7 +22,7 @@ export async function updateUser(userParams: IUpdateUser): Promise<User> {
   return userRepository.update(userParams.id, exclude({ ...userParams, password: hashedPassword }, 'id'));
 }
 
-export async function getUser(getUserParams: IFindUserParams): Promise<User[]> {
+export async function getUser(getUserParams: IFindUserDto): Promise<User[]> {
   return userRepository.findMany(getUserParams);
 }
 
