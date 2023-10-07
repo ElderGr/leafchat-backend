@@ -10,7 +10,7 @@ datasource mongodb {
 
 model Chat {
   id            String @id @map("_id") @default(auto()) @mongodb.ObjectId
-  participants  String[]    
+  participants  String[] 
   messages      Message[]
   created_at    DateTime    @default(now())
 }

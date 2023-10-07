@@ -15,9 +15,11 @@ async function create({ content, contentType, chatId, owner }: CreateMessageDto)
   return createdMessage;
 }
 
-async function list({ chatId }: FindAllMessageDto): Promise<MessageModel[]> {
+async function list({ chatId, page, pageSize }: FindAllMessageDto): Promise<MessageModel[]> {
   const messages = await messagesRepository.findAll({
     chatId,
+    page,
+    pageSize,
   });
 
   return messages;
