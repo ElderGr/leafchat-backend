@@ -70,7 +70,6 @@ async function findMany({ name, roles, id }: IFindUserDto) {
       ...params.where,
       roles: {
         in: roles?.split(','),
-        mode: 'insensitive',
       },
     };
   }
@@ -80,7 +79,6 @@ async function findMany({ name, roles, id }: IFindUserDto) {
       ...params.where,
       id: {
         in: id,
-        mode: 'insensitive',
       },
     };
   }

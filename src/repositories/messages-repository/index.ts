@@ -15,6 +15,8 @@ export type CreateMessageDto = {
 
 export type FindAllMessageDto = {
   chatId: string;
+  page?: number;
+  pageSize?: number;
 };
 
 async function create({ chatId, content, contentType, owner }: CreateMessageDto) {
@@ -28,10 +30,15 @@ async function create({ chatId, content, contentType, owner }: CreateMessageDto)
   });
 }
 
-async function findAll({ chatId }: FindAllMessageDto) {
+async function findAll({ chatId, page = 1, pageSize = 10 }: FindAllMessageDto) {
   return mongoClient.message.findMany({
     where: {
       chatId,
+    },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
+    orderBy: {
+      created_at: 'desc',
     },
   });
 }

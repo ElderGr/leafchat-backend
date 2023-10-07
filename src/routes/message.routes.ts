@@ -4,7 +4,7 @@ import uploadConfig from '@/config/upload';
 import multer from 'multer';
 
 const routes = express.Router();
-const upload = multer(uploadConfig);
+const upload = multer();
 
 routes.post(`/message`, upload.single('audio'), createMessage);
 routes.get(`/message`, findAllMessages);

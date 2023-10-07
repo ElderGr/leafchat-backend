@@ -4,11 +4,10 @@ import { IFindUserParams } from '@/repositories/user-repository';
 
 export async function getUsers(req: Request, res: Response) {
   const params: IFindUserParams = req.query;
-
   return res.send(
     await userService.getUser({
       ...params,
-      id: params.id?.split('') || [],
+      id: params.id ? params.id.split(',') : [],
     }),
   );
 }
