@@ -8,3 +8,9 @@ export interface IFileParam {
   path: string;
   size: number;
 }
+
+export interface BaseEntity {
+  id: string;
+  created_at: Date;
+  updated_at: Date;
+}

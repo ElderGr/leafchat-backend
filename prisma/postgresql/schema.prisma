@@ -82,7 +82,7 @@ model User {
   roles      String     @db.VarChar
   email      String     @db.VarChar @unique
   password   String     @db.VarChar
-  create_at  DateTime   @default(now())
+  created_at  DateTime   @default(now())
   updated_at DateTime   @updatedAt
   deleted_at DateTime?  @db.Timestamp(0)
   Comments   Comments[]
