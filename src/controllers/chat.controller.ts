@@ -3,7 +3,7 @@ import { AuthenticatedRequest } from '@/middlewares/authentication.middleware';
 import { ChatService } from '@/services/chats-service';
 import { Request, Response } from 'express';
 
-export async function getChat(req: Request, res: Response) {
+export async function getChat(req: AuthenticatedRequest, res: Response) {
   const { participants } = req.query as FindAllChatsControllerParams;
 
   const chats = await ChatService.findAll({

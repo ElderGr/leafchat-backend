@@ -4,18 +4,13 @@ import userRepository from '@/repositories/user-repository';
 import { nonExistentUserError } from '../user-service/errors';
 import { missingBackendEnvError } from '@/errors/env.error';
 import { postNotFoundError } from './error';
-
-export type ICreatePostParams = Pick<Post, 'title' | 'description' | 'user_id'> & {
-  files: {
-    filename: string;
-  }[];
-};
+import { CreatePostDto } from '@/domain/post/post.dto';
 
 export type IListPostParams = Partial<Omit<Post, 'description' | 'updated_at'>> & {
   take?: number;
 };
 
-async function createPost({ description, title, user_id, files }: ICreatePostParams): Promise<Post> {
+async function createPost({ description, title, user_id, files }: CreatePostDto): Promise<Post> {
   const user = await userRepository.findById(user_id);
   if (!user) {
     throw nonExistentUserError();
@@ -25,16 +20,11 @@ async function createPost({ description, title, user_id, files }: ICreatePostPar
     throw missingBackendEnvError();
   }
 
-  const formatFiles = files.map((file) => ({
-    name: file.filename,
-    link: `${process.env.BACKEND_URL}/files/${file.filename}`,
-  }));
-
   const createdPost = await postRepository.create({
     description,
     title,
     user_id,
-    files: formatFiles,
+    files,
   });
 
   return createdPost;

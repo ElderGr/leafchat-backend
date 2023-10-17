@@ -1,27 +1,17 @@
+import { AuthenticatedRequest } from '@/middlewares/authentication.middleware';
 import commentService from '@/services/comment-service';
-import { Request, Response } from 'express';
+import { IFileParam } from '@/shared/types';
+import { Response } from 'express';
 import httpStatus from 'http-status';
 
-type IFileParam = {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  destination: string;
-  filename: string;
-  path: string;
-  size: number;
-};
-
-export async function createComment(req: Request, res: Response) {
-  let { content } = req.body;
+export async function createComment(req: AuthenticatedRequest, res: Response) {
+  const { content } = req.body;
   const userId = req.userId;
   let files = req.files as IFileParam[];
-  if(!files) files = [];
-
+  if (!files) files = [];
 
   const filesName = files.map((file) => ({ filename: file.filename }));
-  
+
   const { postId } = req.params;
 
   const comment = await commentService.add({
@@ -34,7 +24,7 @@ export async function createComment(req: Request, res: Response) {
   return res.status(httpStatus.CREATED).send(comment);
 }
 
-export async function getComments(req: Request, res: Response) {
+export async function getComments(req: AuthenticatedRequest, res: Response) {
   const { postId } = req.params;
 
   const comments = await commentService.list({

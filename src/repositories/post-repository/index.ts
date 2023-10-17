@@ -1,13 +1,6 @@
 import { postgreClient } from '@/config';
-import { Post } from '../../../prisma/generated/postgresql';
 import { Prisma } from '@prisma_config/generated/postgresql';
-
-export type ICreatePostParams = Pick<Post, 'title' | 'description' | 'user_id'> & {
-  files: {
-    name: string;
-    link: string;
-  }[];
-};
+import { CreatePostDto } from '@/domain/post/post.dto';
 
 export type IListPostRepositoryParams = {
   user_id: string[];
@@ -26,7 +19,7 @@ async function findById(id: string) {
   });
 }
 
-async function create({ description, files, title, user_id }: ICreatePostParams) {
+async function create({ description, files, title, user_id }: CreatePostDto) {
   return postgreClient.post.create({
     data: {
       description,
@@ -58,7 +51,7 @@ async function list({ user_id, create_at, id, likes, title, take }: Partial<ILis
         },
       },
     },
-    take
+    take,
   };
 
   if (user_id && user_id?.length > 0) {

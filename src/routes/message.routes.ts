@@ -1,14 +1,14 @@
 import express from 'express';
-import { createMessage, createAudioMessage, findAllMessages } from '@/controllers/message.controller';
-import uploadConfig from '@/config/upload';
+import { createMessage, findAllMessages } from '@/controllers/message.controller';
 import multer from 'multer';
+import { validateBody } from '@/schemas/validation-middleware';
+import { createMessageSchema } from '@/schemas/message.schemas';
+import { authenticateToken } from '@/middlewares/authentication.middleware';
 
 const routes = express.Router();
 const upload = multer();
 
-routes.post(`/message`, upload.single('audio'), createMessage);
-routes.get(`/message`, findAllMessages);
-
-// routes.post(`/message/:chatid/audio`, multer().single('audio'), createAudioMessage);
+routes.post(`/message`, authenticateToken, validateBody(createMessageSchema), upload.single('audio'), createMessage);
+routes.get(`/message`, authenticateToken, findAllMessages);
 
 export default routes;

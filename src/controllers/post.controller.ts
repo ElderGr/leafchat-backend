@@ -1,16 +1,7 @@
-import postService, { ICreatePostParams, IListPostParams } from '@/services/post-service';
+import { CreatePostDto } from '@/domain/post/post.dto';
+import postService, { IListPostParams } from '@/services/post-service';
+import { IFileParam } from '@/shared/types';
 import { Request, Response } from 'express';
-
-type IFileParam = {
-  fieldname: string;
-  originalname: string;
-  encoding: string;
-  mimetype: string;
-  destination: string;
-  filename: string;
-  path: string;
-  size: number;
-};
 
 export async function getPosts(req: Request, res: Response) {
   const { create_at, id, title, user_id, take } = req.query as IListPostParams;
@@ -27,10 +18,13 @@ export async function getPosts(req: Request, res: Response) {
 }
 
 export async function createPost(req: Request, res: Response) {
-  const { description, title } = req.body as ICreatePostParams;
+  const { description, title } = req.body as CreatePostDto;
   const files = req.files as IFileParam[];
 
-  const filesName = files.map((file) => ({ filename: file.filename }));
+  const filesName = files.map((file) => ({
+    name: file.filename,
+    link: `${process.env.BACKEND_URL}/files/${file.filename}`,
+  }));
 
   const createdPost = await postService.createPost({
     description,

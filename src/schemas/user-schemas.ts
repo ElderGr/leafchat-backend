@@ -1,4 +1,4 @@
-import { IUserInParams } from 'interfaces/user-interface';
+import { IUserInParams } from '@/domain/user/user.dto';
 import Joi from 'joi';
 
 export const userSchema = Joi.object<IUserInParams>({
