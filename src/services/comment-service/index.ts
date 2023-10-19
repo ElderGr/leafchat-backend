@@ -9,7 +9,7 @@ type IAddComment = Pick<Comments, 'post_id' | 'user_id' | 'body'> & {
   files: {
     filename: string;
   }[];
-}
+};
 
 type IListComments = Pick<Comments, 'post_id'>;
 
@@ -25,19 +25,16 @@ async function add({ body, post_id, user_id, files }: IAddComment): Promise<Comm
     throw postNotFoundError();
   }
 
-  
-
   const formatFiles = files.map((file) => ({
     name: file.filename,
     link: `${process.env.BACKEND_URL}/files/${file.filename}`,
   }));
 
-
   const createdComment = await commentRepository.create({
     body,
     post_id,
     user_id,
-    files: formatFiles
+    files: formatFiles,
   });
 
   return createdComment;

@@ -11,6 +11,7 @@ export type CreateMessageDto = {
   contentType: string;
   owner: string;
   chatId: string;
+  audio?: Express.Multer.File;
 };
 
 export type FindAllMessageDto = {

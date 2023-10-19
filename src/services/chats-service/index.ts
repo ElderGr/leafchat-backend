@@ -12,9 +12,10 @@ async function create({ participants }: CreateChatDto) {
       participants,
     });
   }
-  const chats = await ChatService.findAll({
+  const chats = await ChatRepository.findAll({
     participants: participants,
   });
+
   io.emit('chat_list', chats);
 
   return chat;

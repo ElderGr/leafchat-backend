@@ -1,6 +1,6 @@
 export interface CreateMessageDto {
   chatId: string;
   content: string;
-  contentType: string;
+  contentType: 'audio' | 'text';
   owner: string;
 }
