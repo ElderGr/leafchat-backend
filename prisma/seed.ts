@@ -57,7 +57,7 @@ async function main() {
 
   console.log({
     users: createdUsers,
-    createdPost,
+    // createdPost,
   });
 }
 
